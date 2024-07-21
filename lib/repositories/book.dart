@@ -1,16 +1,15 @@
 import '../database_provider.dart';
 import '../models/book.dart';
 
-
-class BkRepo {
-  final DbProv dbProvider = DbProv();
+class BookRepository {
+  final DatabaseProvider dbProvider = DatabaseProvider.db;
 
   Future<List<BookModel>> fetchBooks() async {
     return await dbProvider.getBooks();
   }
 
   Future<void> addBook(BookModel book) async {
-    await dbProvider.insertBook(book);
+    await dbProvider.addBook(book);
   }
 
   Future<void> editBook(BookModel book) async {

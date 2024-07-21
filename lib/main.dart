@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:your_project_name/state/app.dart';
-import 'package:your_project_name/state/book.dart';
-import 'Utils/constants.dart';
+import 'state/app.dart';
+import 'state/book.dart';
 import 'configurations/routes.dart';
 import 'configurations/theme.dart';
-
 
 void main() {
   runApp(MyApp());
@@ -16,16 +14,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AppSt()),
-        ChangeNotifierProvider(create: (_) => BkSt()),
+        ChangeNotifierProvider(create: (_) => AppState()),
+        ChangeNotifierProvider(create: (_) => BookState()),
       ],
-      child: Consumer<AppSt>(
+      child: Consumer<AppState>(
         builder: (context, appState, child) {
           return MaterialApp(
-            title: Constants.appName,
+            title: 'My Book Library',
             theme: appState.isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme,
             routes: AppRoutes.routes,
             initialRoute: '/',
+            debugShowCheckedModeBanner: false,
           );
         },
       ),

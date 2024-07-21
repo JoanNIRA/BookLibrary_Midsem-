@@ -17,7 +17,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
   final _formKey = GlobalKey<FormState>();
   late String _title, _author;
   late int _rating;
-  late bool _isRead;
+  bool _isRead = true; // Default read status
 
   @override
   void initState() {
@@ -31,13 +31,12 @@ class _AddEditScreenState extends State<AddEditScreen> {
       _title = '';
       _author = '';
       _rating = 0;
-      _isRead = false;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final bookState = Provider.of<BkSt>(context);
+    final bookState = Provider.of<BookState>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -79,17 +78,6 @@ class _AddEditScreenState extends State<AddEditScreen> {
                     _rating = value;
                   });
                 },
-              ),
-              SizedBox(height: 16.0),
-              SwitchListTile(
-                title: Text('Read'),
-                value: _isRead,
-                onChanged: (value) {
-                  setState(() {
-                    _isRead = value;
-                  });
-                },
-                activeColor: Colors.teal,
               ),
               SizedBox(height: 32.0),
               ElevatedButton(

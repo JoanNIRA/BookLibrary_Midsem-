@@ -1,3 +1,3 @@
 class Constants {
-  static const String appName = 'Personal Book Library';
+  static const appName = 'My Book Library';
 }

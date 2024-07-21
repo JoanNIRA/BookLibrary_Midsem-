@@ -1,41 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:your_project_name/screens/book_details.dart';
 import '../models/book.dart';
 import '../state/book.dart';
 
+
 class BkCrd extends StatelessWidget {
-  final BkMdl book;
+  final BookModel book;
 
   BkCrd({required this.book});
 
   @override
   Widget build(BuildContext context) {
-    final bkState = Provider.of<BkSt>(context);
+    final bookState = Provider.of<BookState>(context);
 
     return Card(
       child: ListTile(
         title: Text(book.title),
         subtitle: Text(book.author),
-        trailing: PopupMenuButton<String>(
-          onSelected: (String value) {
-            switch (value) {
-              case 'Edit':
-                Navigator.pushNamed(context, '/add_edit', arguments: book);
-                break;
-              case 'Delete':
-                bkState.deleteBook(book.id);
-                break;
+        trailing: Checkbox(
+          value: book.isRead,
+          onChanged: (bool? value) {
+            if (value != null) {
+              bookState.markAsRead(book.id, value);
             }
           },
-          itemBuilder: (BuildContext context) {
-            return {'Edit', 'Delete'}.map((String choice) {
-              return PopupMenuItem<String>(
-                value: choice,
-                child: Text(choice),
-              );
-            }).toList();
-          },
         ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BookDetailScreen(book: book),
+            ),
+          );
+        },
       ),
     );
   }

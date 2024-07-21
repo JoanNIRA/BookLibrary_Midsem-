@@ -8,8 +8,8 @@ import '../state/book.dart';
 class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<AppSt>(context);
-    final bkState = Provider.of<BkSt>(context);
+    final appState = Provider.of<AppState>(context);
+    final bkState = Provider.of<BookState>(context);
 
     return Scaffold(
       appBar: AppBar(

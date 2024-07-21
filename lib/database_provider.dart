@@ -1,72 +1,54 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'models/book.dart';
+import '../models/book.dart';
 
-
-class DbProv {
-  static final DbProv _instance = DbProv._internal();
-  factory DbProv() => _instance;
-
-  DbProv._internal();
-
-  Database? _database;
+class DatabaseProvider {
+  DatabaseProvider._();
+  static final DatabaseProvider db = DatabaseProvider._();
+  static Database? _database;
 
   Future<Database> get database async {
     if (_database != null) return _database!;
-    _database = await _initDb();
+    _database = await initDB();
     return _database!;
   }
 
-  Future<Database> _initDb() async {
-    String path = join(await getDatabasesPath(), 'books.db');
-    return await openDatabase(path, version: 1, onCreate: _onCreate);
+  Future<Database> initDB() async {
+    String path = join(await getDatabasesPath(), 'booklibrary.db');
+    return await openDatabase(path, version: 1, onCreate: (db, version) async {
+      await db.execute('''
+        CREATE TABLE Books (
+          id INTEGER PRIMARY KEY,
+          title TEXT,
+          author TEXT,
+          rating INTEGER,
+          isRead INTEGER
+        )
+      ''');
+    });
   }
 
-  Future _onCreate(Database db, int version) async {
-    await db.execute(
-      'CREATE TABLE books(id INTEGER PRIMARY KEY, title TEXT, author TEXT, rating INTEGER, isRead INTEGER)',
-    );
+  Future<int> addBook(BookModel book) async {
+    final db = await database;
+    return await db.insert('Books', book.toMap());
   }
 
   Future<List<BookModel>> getBooks() async {
     final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query('books');
-    return List.generate(maps.length, (i) {
-      return BookModel(
-        id: maps[i]['id'],
-        title: maps[i]['title'],
-        author: maps[i]['author'],
-        rating: maps[i]['rating'],
-        isRead: maps[i]['isRead'] == 1,
-      );
-    });
+    var res = await db.query('Books');
+    List<BookModel> list =
+    res.isNotEmpty ? res.map((c) => BookModel.fromMap(c)).toList() : [];
+    return list;
   }
 
-  Future<void> insertBook(BkMdl book) async {
+  Future<int> updateBook(BookModel book) async {
     final db = await database;
-    await db.insert(
-      'books',
-      book.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    return await db.update('Books', book.toMap(),
+        where: 'id = ?', whereArgs: [book.id]);
   }
 
-  Future<void> updateBook(BkMdl book) async {
+  Future<int> deleteBook(int id) async {
     final db = await database;
-    await db.update(
-      'books',
-      book.toMap(),
-      where: 'id = ?',
-      whereArgs: [book.id],
-    );
-  }
-
-  Future<void> deleteBook(int id) async {
-    final db = await database;
-    await db.delete(
-      'books',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+    return await db.delete('Books', where: 'id = ?', whereArgs: [id]);
   }
 }

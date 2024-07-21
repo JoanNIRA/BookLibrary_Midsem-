@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static final lightTheme = ThemeData(
-    primaryColor: Colors.white,
     brightness: Brightness.light,
-    colorScheme: ColorScheme.light(
-      primary: Colors.white,
-      secondary: Colors.teal,
+    primarySwatch: Colors.teal,
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.teal,
+      titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
     ),
   );
 
   static final darkTheme = ThemeData(
-    primaryColor: Colors.black,
     brightness: Brightness.dark,
-    colorScheme: ColorScheme.dark(
-      primary: Colors.black,
-      secondary: Colors.teal,
+    primarySwatch: Colors.teal,
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.teal[800],
+      titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
     ),
   );
 }

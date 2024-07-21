@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:your_project_name/widgets/search.dart';
 import '../state/book.dart';
 import '../widgets/book_card.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final bkState = Provider.of<BkSt>(context);
+    final bookState = Provider.of<BookState>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Book Library'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: BookSearch(bookState),
+              );
+            },
+          ),
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -30,48 +42,28 @@ class HomeScreen extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(Icons.book),
-              title: Text(
-                'View All Books',
-                style: TextStyle(fontSize: 18),
-              ),
+              title: Text('View All Books', style: TextStyle(fontSize: 18)),
               onTap: () {
                 Navigator.pop(context);
-                // Handle the view all books action
               },
             ),
             ListTile(
               leading: Icon(Icons.settings),
-              title: Text(
-                'Settings',
-                style: TextStyle(fontSize: 18),
-              ),
+              title: Text('Settings', style: TextStyle(fontSize: 18)),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/settings');
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.share),
-              title: Text(
-                'Shared Preferences',
-                style: TextStyle(fontSize: 18),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-
               },
             ),
           ],
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          color: Colors.teal[100],
-        ),
+        decoration: BoxDecoration(color: Colors.teal[100]),
         child: ListView.builder(
-          itemCount: bkState.books.length,
+          itemCount: bookState.books.length,
           itemBuilder: (context, index) {
-            return BkCrd(book: bkState.books[index]);
+            return BkCrd(book: bookState.books[index]);
           },
         ),
       ),
@@ -83,3 +75,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+

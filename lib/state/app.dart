@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppSt extends ChangeNotifier {
+class AppState extends ChangeNotifier {
   bool _isDarkMode = false;
   String _sortOrder = 'title';
 
@@ -17,5 +17,3 @@ class AppSt extends ChangeNotifier {
     notifyListeners();
   }
 }
-
-

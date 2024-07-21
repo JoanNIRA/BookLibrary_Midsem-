@@ -3,7 +3,7 @@ import '../models/book.dart';
 import '../screens/add_edit.dart';
 import '../screens/book_details.dart';
 import '../screens/home_screen.dart';
-import '../screens/settings_screen.dart'; // Import the book model
+import '../screens/settings_screen.dart';
 
 class AppRoutes {
   static final routes = <String, WidgetBuilder>{
@@ -14,7 +14,7 @@ class AppRoutes {
     },
     '/detail': (context) {
       final BookModel? book = ModalRoute.of(context)?.settings.arguments as BookModel?;
-      return BookDetailScreen(book: book);
+      return BookDetailScreen(book: book!);
     },
     '/settings': (context) => SettingsScreen(),
   };
