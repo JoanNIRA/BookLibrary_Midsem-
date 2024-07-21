@@ -75,4 +75,9 @@ class BookState extends ChangeNotifier {
     _searchQuery = query;
     notifyListeners();
   }
+
+  void sortBooksByRating() {
+    _books.sort((a, b) => b.rating.compareTo(a.rating));
+    notifyListeners();
+  }
 }

@@ -17,7 +17,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
   final _formKey = GlobalKey<FormState>();
   late String _title, _author;
   late int _rating;
-  bool _isRead = true; // Default read status
+  bool _isRead = false; // Default read status
 
   @override
   void initState() {
@@ -76,6 +76,16 @@ class _AddEditScreenState extends State<AddEditScreen> {
                 onRatingChanged: (value) {
                   setState(() {
                     _rating = value;
+                  });
+                },
+              ),
+              SizedBox(height: 16.0),
+              CheckboxListTile(
+                title: Text('Read'),
+                value: _isRead,
+                onChanged: (value) {
+                  setState(() {
+                    _isRead = value!;
                   });
                 },
               ),
